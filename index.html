@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta Tags -->
+  <title>Offline Translator — Neural Machine Translation Plugin for Unreal Engine 5</title>
+  <meta name="description" content="Offline Translator is a neural machine translation plugin for Unreal Engine 5. Translate text between 12 language pairs with no internet connection required. Powered by CTranslate2 and Opus-MT. Blueprint ready.">
+  <meta name="keywords" content="unreal engine translation plugin, offline translation unreal engine, UE5 translator plugin, neural machine translation unreal, no internet translation unreal engine, NMT plugin unreal, blueprint translation unreal engine 5, offline NLP unreal, game localization unreal engine, opus-mt unreal engine">
+  <meta name="author" content="Rohan Krishna Saxena">
+  <link rel="canonical" href="https://rohanksaxena.github.io/offline-translator/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Offline Translator — Neural Machine Translation for Unreal Engine 5">
+  <meta property="og:description" content="Translate text between 12 language pairs with no internet connection. Powered by CTranslate2 and Opus-MT. Blueprint ready. Works in packaged builds.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rohanksaxena.github.io/offline-translator/">
+  <meta property="og:image" content="https://rohanksaxena.github.io/offline-translator/assets/banner.jpg">
+  <meta property="og:site_name" content="Offline Translator">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Offline Translator — Neural Machine Translation for Unreal Engine 5">
+  <meta name="twitter:description" content="Translate text between 12 language pairs with no internet connection. Blueprint ready. CPU only. Works in packaged builds.">
+  <meta name="twitter:image" content="https://rohanksaxena.github.io/offline-translator/assets/banner.jpg">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Offline Translator",
+    "description": "Neural machine translation plugin for Unreal Engine 5. Translate text between 12 language pairs with no internet connection required.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Windows",
+    "offers": {
+      "@type": "Offer",
+      "url": "https://www.fab.com/listings/7b6d1afb-8bfe-45bd-8a68-51cad4437dc0",
+      "priceCurrency": "USD",
+      "price": "24.99"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Rohan Krishna Saxena",
+      "url": "https://github.com/rohanksaxena"
+    },
+    "url": "https://rohanksaxena.github.io/offline-translator/",
+    "softwareVersion": "1.0.0",
+    "downloadUrl": "https://www.fab.com/listings/7b6d1afb-8bfe-45bd-8a68-51cad4437dc0"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #1e2a3a;
+      --navy-light: #2a3a4e;
+      --navy-dark: #141e2a;
+      --orange: #f97316;
+      --orange-light: #fb923c;
+      --orange-dim: rgba(249,115,22,0.15);
+      --cream: #fdf6ee;
+      --cream-dark: #f5ece0;
+      --text: #1e2a3a;
+      --text-muted: #6b7a8d;
+      --white: #ffffff;
+      --border: rgba(30,42,58,0.12);
+      --code-bg: #1a2433;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(253,246,238,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--navy);
+    }
+
+    .nav-logo-dot {
+      width: 8px; height: 8px;
+      background: var(--orange);
+      border-radius: 50%;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--navy); }
+
+    .nav-cta {
+      background: var(--orange) !important;
+      color: white !important;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-weight: 600 !important;
+    }
+
+    .nav-cta:hover { background: var(--orange-light) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding: 8rem 6rem 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--orange-dim);
+      border: 1px solid rgba(249,115,22,0.3);
+      color: var(--orange);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title span { color: var(--orange); }
+
+    .hero-sub {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--navy);
+      color: white;
+      text-decoration: none;
+      padding: 0.875rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--navy);
+      text-decoration: none;
+      padding: 0.875rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--navy);
+      background: rgba(30,42,58,0.05);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat { display: flex; flex-direction: column; }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Hero screenshot */
+    .hero-visual { position: relative; }
+
+    .screenshot-frame {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(30,42,58,0.25), 0 0 0 1px rgba(30,42,58,0.08);
+    }
+
+    .screenshot-frame img {
+      width: 100%;
+      display: block;
+    }
+
+    .floating-tag {
+      position: absolute;
+      background: var(--orange);
+      color: white;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(249,115,22,0.4);
+      white-space: nowrap;
+    }
+
+    .tag-1 { top: -16px; right: 40px; }
+    .tag-2 { bottom: 40px; left: -20px; }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* LANGUAGES */
+    .languages { background: white; }
+
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .lang-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .lang-pair {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--navy);
+    }
+
+    .lang-arrow {
+      color: var(--orange);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .lang-size {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* FEATURES */
+    .features { background: var(--cream); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: all 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(249,115,22,0.1);
+    }
+
+    .feature-icon {
+      width: 40px; height: 40px;
+      background: var(--orange-dim);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* SCREENSHOTS */
+    .screenshots { background: white; }
+
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .screenshot-card {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(30,42,58,0.08);
+    }
+
+    .screenshot-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .screenshot-caption {
+      padding: 0.875rem 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* NODES */
+    .nodes { background: var(--cream); }
+
+    .nodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .node-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .node-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--orange);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .node-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+    }
+
+    .node-desc {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* QUICKSTART */
+    .quickstart { background: white; }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 3rem;
+      max-width: 700px;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      position: relative;
+      padding-bottom: 2rem;
+    }
+
+    .step:last-child { padding-bottom: 0; }
+
+    .step-line {
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .step:last-child .step-line { display: none; }
+
+    .step-num {
+      width: 40px; height: 40px;
+      background: var(--navy);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-content { padding-top: 0.5rem; }
+
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+
+    .step-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .code-inline {
+      font-family: 'DM Mono', monospace;
+      background: var(--code-bg);
+      color: #86efac;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
+    /* COMPAT */
+    .compat { background: var(--navy-dark); }
+    .compat .section-title { color: white; }
+    .compat .section-label { color: var(--orange-light); }
+    .compat .section-sub { color: rgba(255,255,255,0.5); }
+
+    .compat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .compat-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .compat-check {
+      width: 28px; height: 28px;
+      background: rgba(134,239,172,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #86efac;
+      flex-shrink: 0;
+    }
+
+    .compat-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: white;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: var(--navy);
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+
+    .cta-section .section-label { color: var(--orange-light); }
+
+    .cta-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: white;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .cta-sub {
+      color: rgba(255,255,255,0.5);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--orange);
+      color: white;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .btn-cta-primary:hover {
+      background: var(--orange-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: white;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      transition: all 0.2s;
+    }
+
+    .btn-cta-secondary:hover {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy-dark);
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 7rem 2rem 3rem;
+        gap: 3rem;
+      }
+      .hero-visual { order: -1; }
+      .nav-links { display: none; }
+      .screenshots-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-content > * {
+      animation: fadeUp 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-badge { animation-delay: 0.1s; }
+    .hero-title { animation-delay: 0.2s; }
+    .hero-sub { animation-delay: 0.3s; }
+    .hero-actions { animation-delay: 0.4s; }
+    .hero-stats { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="assets/logo128.png" alt="Offline Translator Logo" style="width:28px;height:28px;border-radius:4px;">
+    Offline Translator
+  </a>
+  <ul class="nav-links">
+    <li><a href="#languages">Languages</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#nodes">Blueprint Nodes</a></li>
+    <li><a href="#quickstart">Quick Start</a></li>
+    <li><a href="https://github.com/rohanksaxena/offline-translator/issues">Support</a></li>
+    <li><a href="https://www.fab.com/listings/7b6d1afb-8bfe-45bd-8a68-51cad4437dc0" class="nav-cta">Get on Fab →</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section style="padding: 0; background: var(--cream);">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span>●</span> Unreal Engine 5.7 — Windows 64-bit
+      </div>
+      <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.25rem;">
+        <img src="assets/logo128.png" alt="Offline Translator Logo" style="width:56px;height:56px;border-radius:8px;box-shadow:0 4px 16px rgba(30,42,58,0.15);">
+      </div>
+      <h1 class="hero-title">
+        Neural translation.<br><span>No internet.</span><br>No limits.
+      </h1>
+      <p class="hero-sub">
+        Offline Translator brings professional-grade neural machine translation into your Unreal Engine project. Translate text between 12 language pairs entirely on CPU — no API keys, no runtime costs, no internet connection.
+      </p>
+      <div class="hero-actions">
+        <a href="https://www.fab.com/listings/7b6d1afb-8bfe-45bd-8a68-51cad4437dc0" class="btn-primary">
+          Get on Fab Marketplace →
+        </a>
+        <a href="https://drive.google.com/file/d/1Hbi4bEop52m3AUskxaDhEw15BKeQjRBm/view?usp=sharing" class="btn-secondary">
+          Download Demo
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">12</span>
+          <span class="stat-label">Language pairs</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">CPU</span>
+          <span class="stat-label">Only, no GPU needed</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">No</span>
+          <span class="stat-label">Internet required</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="floating-tag tag-1">v1.0.0 — Latest</div>
+      <div class="screenshot-frame">
+        <img src="assets/banner.jpg" alt="Offline Translator — Neural Machine Translation Plugin for Unreal Engine 5">
+      </div>
+      <div class="floating-tag tag-2">Blueprint Ready</div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section class="languages" id="languages">
+  <div class="section-inner">
+    <p class="section-label">Supported Languages</p>
+    <h2 class="section-title">12 language pairs, ready to use</h2>
+    <p class="section-sub">All models are based on Helsinki-NLP Opus-MT and run entirely on CPU using Intel oneDNN acceleration. Download only the pairs you need — ~80MB each.</p>
+
+    <div class="lang-grid">
+      <div class="lang-card">
+        <div class="lang-pair">English ↔ German</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-pair">English ↔ French</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-pair">English ↔ Spanish</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-pair">English ↔ Italian</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-pair">English ↔ Russian</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-pair">English ↔ Polish</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-inner">
+    <p class="section-label">Features</p>
+    <h2 class="section-title">Everything you need for<br>in-game translation</h2>
+    <p class="section-sub">Built for game developers who need reliable, fast, offline translation without external dependencies or ongoing costs.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-title">100% Offline</div>
+        <p class="feature-desc">No internet connection required at runtime. Models run entirely on CPU using Intel oneDNN acceleration. Ship your game without worrying about API availability.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔷</div>
+        <div class="feature-title">Blueprint Ready</div>
+        <p class="feature-desc">Simple Blueprint nodes usable in any Blueprint. Two APIs available — Quick Translate for one-liners, and the full Subsystem for persistent state management.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Async Support</div>
+        <p class="feature-desc">Non-blocking async translation nodes keep your game running smoothly. Translation happens on a background thread with callback on completion.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <div class="feature-title">Sentence & Paragraph Modes</div>
+        <p class="feature-desc">Sentence mode for short NPC dialogue lines. Paragraph mode for multi-sentence text — splits, translates each sentence, then joins for more faithful output.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <div class="feature-title">Settings Panel</div>
+        <p class="feature-desc">Full configuration via Project Settings → Plugins → Offline Translator. Language pair selection, model status indicator, model download management, CPU threads and beam size tuning.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <div class="feature-title">Model Management</div>
+        <p class="feature-desc">Download models on demand via console command. Only download the language pairs you need. Models are staged with your game automatically for packaged builds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <div class="feature-title">Fast & Lightweight</div>
+        <p class="feature-desc">Intel oneDNN INT8 quantization keeps models small and inference fast. First translation warms up compute kernels, subsequent translations are significantly faster.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">Packaged Build Support</div>
+        <p class="feature-desc">Same API and performance in Editor, PIE, and fully packaged Shipping builds. Models are staged as loose files alongside your game content.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔑</div>
+        <div class="feature-title">No API Keys</div>
+        <p class="feature-desc">No accounts, no subscriptions, no per-request costs. Purchase once, use forever. Models are hosted on HuggingFace and downloaded directly into your project.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section class="screenshots" id="screenshots">
+  <div class="section-inner">
+    <p class="section-label">Screenshots</p>
+    <h2 class="section-title">See it in action</h2>
+    <p class="section-sub">From Blueprint setup to in-game translation — everything works exactly as you'd expect.</p>
+
+    <div class="screenshots-grid">
+      <div class="screenshot-card">
+        <img src="assets/screenshot1.png" alt="Offline Translator demo widget running in Unreal Engine 5 showing English to German translation">
+        <div class="screenshot-caption">Demo widget — live translation in packaged build</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="assets/screenshot2.png" alt="Offline Translator Project Settings panel in Unreal Engine 5 showing language pair and model status">
+        <div class="screenshot-caption">Project Settings panel — language pair & model management</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="assets/screenshot3.png" alt="Offline Translator Blueprint nodes showing Initialize Translator and translation flow">
+        <div class="screenshot-caption">Step 1 — Initialize the translation model</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="assets/screenshot4.png" alt="Offline Translator Blueprint showing all 4 translation modes with Switch on String">
+        <div class="screenshot-caption">Step 2 — Translate with all 4 modes (Sentence/Paragraph × Sync/Async)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NODES -->
+<section class="nodes" id="nodes">
+  <div class="section-inner">
+    <p class="section-label">Blueprint Nodes</p>
+    <h2 class="section-title">Clean, simple API</h2>
+    <p class="section-sub">Two ways to use the plugin — the BP Library for quick one-liners, or the full Game Instance Subsystem for persistent state.</p>
+
+    <div class="nodes-grid">
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Initialize Translator</div>
+          <div class="node-desc">Load a language model into memory. Call once before translating. Async with On Ready callback.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Translate Sentence</div>
+          <div class="node-desc">Translate a single sentence synchronously. Returns translated text and timing.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Translate Sentence Async</div>
+          <div class="node-desc">Non-blocking sentence translation. Result via On Complete delegate.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Translate Paragraph</div>
+          <div class="node-desc">Translate multi-sentence text synchronously with better structure preservation.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Translate Paragraph Async</div>
+          <div class="node-desc">Non-blocking paragraph translation. Best for long text in gameplay.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Quick Translate</div>
+          <div class="node-desc">One-liner BP Library node. Translate without managing the subsystem directly.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Shutdown Translator</div>
+          <div class="node-desc">Unload the model and free memory when translation is no longer needed.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Is Translator Ready</div>
+          <div class="node-desc">Returns true if the model is loaded and ready to translate.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Is Language Pair Supported</div>
+          <div class="node-desc">Check if a given language pair has a model available.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Get Backend Name</div>
+          <div class="node-desc">Returns the active compute backend (e.g. oneDNN INT8_FLOAT32).</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Get Offline Translator</div>
+          <div class="node-desc">Get the subsystem reference from anywhere in your Blueprint graph.</div>
+        </div>
+      </div>
+      <div class="node-card">
+        <div class="node-dot"></div>
+        <div>
+          <div class="node-name">Get Supported Language Pairs</div>
+          <div class="node-desc">Returns an array of all supported language pair structs.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICKSTART -->
+<section class="quickstart" id="quickstart">
+  <div class="section-inner">
+    <p class="section-label">Quick Start</p>
+    <h2 class="section-title">Up and running in minutes</h2>
+    <p class="section-sub">Install from Fab, download a model, add two Blueprint nodes and start translating.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Install from Fab</div>
+          <p class="step-desc">Purchase and install from the Epic Games Fab Marketplace. Enable the plugin under <strong>Edit → Plugins → Offline Translator</strong> and restart the editor.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Add one line to DefaultGame.ini</div>
+          <p class="step-desc">Add to <span class="code-inline">Config/DefaultGame.ini</span> for packaged build model staging:</p>
+          <br>
+          <span class="code-inline">[/Script/UnrealEd.ProjectPackagingSettings]</span><br>
+          <br>
+          <span class="code-inline">+DirectoriesToAlwaysStageAsNonUFS=(Path="OfflineTranslatorModels")</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Download a model</div>
+          <p class="step-desc">Open the Unreal console (backtick) and run:</p>
+          <br>
+          <span class="code-inline">OfflineTranslator.DownloadModel English German</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Initialize and translate</div>
+          <p class="step-desc">In your Blueprint, call <span class="code-inline">Get Offline Translator</span> → <span class="code-inline">Initialize Translator</span> → wait for On Ready → call <span class="code-inline">Translate Sentence Async</span>. Done!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPAT -->
+<section class="compat" id="compat">
+  <div class="section-inner">
+    <p class="section-label">Compatibility</p>
+    <h2 class="section-title">Tested and verified</h2>
+    <p class="section-sub">Built for Unreal Engine 5.7 on Windows 64-bit. Additional engine versions coming soon.</p>
+
+    <div class="compat-grid">
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">Unreal Engine 5.7</span>
+      </div>
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">Windows 64-bit</span>
+      </div>
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">Packaged Shipping Builds</span>
+      </div>
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">PIE & Standalone</span>
+      </div>
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">Intel oneDNN Backend</span>
+      </div>
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">CPU Only (v1.0)</span>
+      </div>
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">Blueprint & C++</span>
+      </div>
+      <div class="compat-card">
+        <div class="compat-check">✓</div>
+        <span class="compat-text">No External Dependencies</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-inner" style="text-align: center;">
+    <p class="section-label">Get Started</p>
+    <h2 class="cta-title">Translate your game world today</h2>
+    <p class="cta-sub">Available on the Fab Marketplace. Includes full source, Blueprint demo project, and 12 language pairs ready to download.</p>
+    <div class="cta-buttons">
+      <a href="https://www.fab.com/listings/7b6d1afb-8bfe-45bd-8a68-51cad4437dc0" class="btn-cta-primary">
+        Get on Fab Marketplace →
+      </a>
+      <a href="https://github.com/rohanksaxena/offline-translator/issues" class="btn-cta-secondary">
+        Report an Issue
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="https://www.fab.com/listings/7b6d1afb-8bfe-45bd-8a68-51cad4437dc0">Fab Marketplace</a>
+    <a href="https://github.com/rohanksaxena/offline-translator">GitHub</a>
+    <a href="https://github.com/rohanksaxena/offline-translator/issues">Support</a>
+    <a href="https://drive.google.com/file/d/1Hbi4bEop52m3AUskxaDhEw15BKeQjRBm/view?usp=sharing">Demo Project</a>
+    <a href="https://huggingface.co/rohanksaxena">HuggingFace Models</a>
+    <a href="https://github.com/rohanksaxena">Rohan Krishna Saxena</a>
+  </div>
+  <p class="footer-copy">© 2026 Rohan Krishna Saxena. Offline Translator is available on Fab Marketplace.</p>
+</footer>
+
+</body>
+</html>
