@@ -1,6 +1,6 @@
 # Offline Translator — Unreal Engine Plugin
 
-**Offline neural machine translation for Unreal Engine 5.6 and 5.7**  
+**Offline neural machine translation for Unreal Engine 5.4 - 5.7**  
 Translate text between 12 language pairs with no internet connection required.  
 Powered by [CTranslate2](https://github.com/OpenNMT/CTranslate2) and [Opus-MT](https://github.com/Helsinki-NLP/Opus-MT) models.
 
